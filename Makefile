@@ -1,0 +1,2 @@
+package:
+	./debian/build.sh
