@@ -36,14 +36,11 @@ main() {
 
   # Remove permissions from other by default.
   ${chmod} -R o-Xrw "${src_dir}/opt/fpm-test"
-  # Allow everyone to list path to bin so 'nobody' can exec ah-dpld.
   ${chmod} o+X "${src_dir}/opt/fpm-test" "${src_dir}/opt/fpm-test/bin"
 
   # Remove the previous build
   rm -fr "fpm-test_${version}_amd64.deb"
 
-  # NOTE: We avoid fpm systemd handling because we have many systemd units
-  # that aren't supported or require more careful control.
   bundle exec fpm \
     --name "${name}" \
     --input-type dir \
@@ -55,8 +52,8 @@ main() {
     --after-remove "${root_dir}/debian/after-remove.sh" \
     --no-deb-systemd-restart-after-upgrade \
     --license 'Proprietary' \
-    --vendor 'Acquia, Inc.' \
-    --maintainer 'Acquia CDE Team <engineering@acquia.com>' \
+    --vendor 'Me.' \
+    --maintainer 'me@me.com' \
     --architecture 'amd64' \
     --description 'To Test OSX bulids.'
 }
@@ -66,9 +63,7 @@ build_ruby() {
   (
     cd ..
     rm -rf fpm-test.dir
-    # bundle exec rake rubybuild
     mkdir -p fpm-test.dir/opt/fpm-test/bin
-    # cp bin/run-me.sh fpm-test.dir/opt/fpm-test/bin
     (
       cd fpm-test.dir/opt/fpm-test/bin
       ln -s ../../../../lib/* .
